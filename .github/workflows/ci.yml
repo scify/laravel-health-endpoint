@@ -1,4 +1,4 @@
-name: tests
+name: CI
 
 permissions:
   contents: read
@@ -53,9 +53,10 @@ jobs:
       - name: Run tests
         run: vendor/bin/pest
 
-  static-analysis:
+  lint:
     runs-on: ubuntu-latest
-    name: Pint, Rector and PHPStan
+    # composer lint:check: Pint (formatting), Rector (dry run) and PHPStan.
+    name: Lint and static analysis
 
     steps:
       - name: Checkout code
@@ -72,16 +73,17 @@ jobs:
       - name: Install dependencies
         run: composer update --prefer-dist --no-interaction --no-progress
 
-      - name: Check
+      - name: Lint, formatting and static analysis
         run: composer lint:check
 
-  tests-passed:
+  # The one check to require in the branch ruleset.
+  ci:
     runs-on: ubuntu-latest
-    name: tests-passed
-    needs: [test, static-analysis]
+    name: CI
+    needs: [test, lint]
     if: always()
 
     steps:
       - name: Fail if a job did not succeed
-        if: ${{ needs.test.result != 'success' || needs.static-analysis.result != 'success' }}
+        if: ${{ needs.test.result != 'success' || needs.lint.result != 'success' }}
         run: exit 1
