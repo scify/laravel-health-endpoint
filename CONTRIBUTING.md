@@ -47,6 +47,13 @@ Where to put it:
 A new check name does not change the JSON contract: the schema lists check names as examples. A probe for a transport
 that reported `skipped` changes that app's response from `skipped` to a real result; say so in the CHANGELOG.
 
+## The agent skill
+
+`skills/laravel-health-endpoint` is a copy of the skill in SciFY's private `scify-agent-tools` repository
+(`scify-dev/skills/laravel-health-endpoint`). Change both copies in the same way, and keep them identical. Pint, Rector
+and the pre-commit hook skip the skill: `scripts/detect.php` must also run on PHP 8 and Laravel 8, to report apps
+that are too old.
+
 ## The JSON contract
 
 `resources/schema/health-response.schema.json` is the source of truth for every SciFY app and the monitor. A new
