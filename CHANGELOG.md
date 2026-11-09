@@ -3,7 +3,9 @@
 All notable changes to `scify/laravel-health-endpoint` are documented here. The package follows Semantic Versioning.
 The major version follows the major version of the JSON contract (`schema_version`).
 
-## [Unreleased]
+## [0.1.0] - 2026-11-09
+
+First release.
 
 ### Added
 

@@ -8,7 +8,7 @@ A token-protected, rate-limited `GET /health` endpoint for Laravel 12 and 13, bu
 - Mail and error tracker checks prove that the credentials work, without sending a message or an event.
 - New services need one small probe class (see [Adding checks](#adding-checks)).
 
-Status: `0.x`, before the first release. The contract (`schema_version` 1.0) is stable.
+Status: `0.x`. The contract (`schema_version` 1.0) is stable; the PHP API and the config can still change before `1.0.0`.
 
 ## Contents
 
@@ -122,7 +122,8 @@ The package's major version follows the contract's major version.
 
 **Error tracker probe.** The check sends an empty envelope (`{}`) to the DSN's project, with the key in the
 `X-Sentry-Auth` header. The ingest service checks the key first, and an envelope without items creates no event and
-uses no quota. GlitchTip accepts a disabled key, so the probe cannot detect one. Not yet tested with sentry.io.
+uses no quota. GlitchTip accepts a disabled key, so the probe cannot detect one. Tested live against GlitchTip on
+2026-11-09: a valid key got 200, an unknown key got 403, and GlitchTip recorded no event. Not yet tested with sentry.io.
 
 ## Configuration
 
