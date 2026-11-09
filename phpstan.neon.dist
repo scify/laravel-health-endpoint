@@ -1,0 +1,11 @@
+parameters:
+    level: 9
+    paths:
+        - src
+        - config
+        - routes
+    # The package's own config/ is merged into the app's config, so env() belongs there.
+    configDirectories:
+        - config
+    tmpDir: build/phpstan
+    checkOctaneCompatibility: true

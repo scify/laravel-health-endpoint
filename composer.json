@@ -1,0 +1,76 @@
+{
+    "name": "scify/laravel-health-endpoint",
+    "description": "A token-protected, rate-limited /health endpoint for Laravel, built on spatie/laravel-health, with one JSON contract for monitoring.",
+    "keywords": [
+        "laravel",
+        "health",
+        "health-check",
+        "monitoring",
+        "spatie"
+    ],
+    "homepage": "https://github.com/scify/laravel-health-endpoint",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "SciFY",
+            "homepage": "https://scify.org"
+        }
+    ],
+    "require": {
+        "php": "^8.3",
+        "illuminate/contracts": "^12.0|^13.0",
+        "illuminate/http": "^12.0|^13.0",
+        "illuminate/mail": "^12.0|^13.0",
+        "illuminate/support": "^12.0|^13.0",
+        "spatie/laravel-health": "^1.40",
+        "spatie/laravel-package-tools": "^1.16"
+    },
+    "require-dev": {
+        "larastan/larastan": "^3.3",
+        "laravel/pint": "^1.21",
+        "opis/json-schema": "^2.4",
+        "orchestra/testbench": "^10.0|^11.0",
+        "pestphp/pest": "^3.8|^4.0",
+        "pestphp/pest-plugin-laravel": "^3.1|^4.0",
+        "phpstan/extension-installer": "^1.4",
+        "phpstan/phpstan-deprecation-rules": "^2.0",
+        "rector/rector": "^2.5",
+        "driftingly/rector-laravel": "^2.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "SciFY\\LaravelHealthEndpoint\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "SciFY\\LaravelHealthEndpoint\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "pest",
+        "analyse": "phpstan analyse --no-progress",
+        "format": "pint",
+        "check": [
+            "pint --test",
+            "rector process --dry-run",
+            "phpstan analyse --no-progress"
+        ]
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "phpstan/extension-installer": true
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "SciFY\\LaravelHealthEndpoint\\HealthEndpointServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
