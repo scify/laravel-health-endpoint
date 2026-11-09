@@ -1,8 +1,7 @@
 # Laravel Health Endpoint
 
 A token-protected, rate-limited `GET /health` endpoint for Laravel 12 and 13, built on
-[spatie/laravel-health](https://github.com/spatie/laravel-health). It returns one JSON contract for the SciFY
-monitoring app, with only the checks that the app uses.
+[spatie/laravel-health](https://github.com/spatie/laravel-health). It returns a JSON schema, with only the checks that the app uses.
 
 - Checks run live on each authorised request. No result store, no notifications.
 - The checks are selected from the app's configuration: an app without mail gets no `mail` check.
