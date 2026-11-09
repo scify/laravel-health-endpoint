@@ -1,7 +1,8 @@
 {
 	"preset": "laravel",
 	"exclude": [
-		"vendor"
+		"vendor",
+		"skills"
 	],
 	"rules": {
 		"concat_space": {

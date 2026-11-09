@@ -61,6 +61,19 @@ Publish the config only to change a value:
 php artisan vendor:publish --tag=health-endpoint-config
 ```
 
+### Install with an AI agent
+
+[`skills/laravel-health-endpoint`](skills/laravel-health-endpoint) is an [agent skill](https://agentskills.io) that
+does the steps above for an app. It also confirms the production drivers, sets only the overrides that detection
+cannot know, changes the deploy, adds a feature test and verifies the response. Install it in the app, then run
+`/laravel-health-endpoint` (or `/laravel-health-endpoint audit` for a plan without changes):
+
+```bash
+npx skills add scify/laravel-health-endpoint
+```
+
+You can also copy the directory to the app's `.claude/skills/`. The skill is not part of the Composer package.
+
 ## The response
 
 ```json

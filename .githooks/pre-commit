@@ -25,8 +25,9 @@ echo "🔒 Gitleaks: scanning the staged changes..."
 echo "✅ No secrets found."
 
 # Staged PHP files, NUL-separated so names with spaces work; xargs -0 exists in GNU and BSD xargs.
+# skills/ is left out: its copy of the agent skill must stay identical to the original (see CONTRIBUTING.md).
 php_files() {
-    git diff --cached --name-only --diff-filter=d -z -- '*.php'
+    git diff --cached --name-only --diff-filter=d -z -- '*.php' ':(exclude)skills/'
 }
 
 if [ -z "$(php_files | tr -d '\0')" ]; then
