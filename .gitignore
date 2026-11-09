@@ -10,3 +10,4 @@ testbench.yaml
 .idea/
 .vscode/
 .DS_Store
+/tools/bin/

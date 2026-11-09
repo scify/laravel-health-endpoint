@@ -1,0 +1,132 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://raw.githubusercontent.com/scify/laravel-health-endpoint/main/resources/schema/health-response.schema.json",
+    "title": "SciFY /health response",
+    "description": "Response of GET /health in SciFY Laravel apps. schema_version 1.x. The monitoring app validates against the same file.",
+    "type": "object",
+    "required": ["schema_version", "status", "checked_at", "duration_ms", "app", "checks"],
+    "additionalProperties": true,
+    "properties": {
+        "schema_version": {
+            "description": "MAJOR.MINOR. A new optional field increments MINOR; a removed or renamed field increments MAJOR.",
+            "type": "string",
+            "pattern": "^1\\.[0-9]+$"
+        },
+        "status": {
+            "description": "failed if any check is failed or crashed; warning if any check warns; otherwise ok. HTTP 503 for failed, 200 otherwise.",
+            "enum": ["ok", "warning", "failed"]
+        },
+        "checked_at": {
+            "description": "ISO 8601, UTC, Zulu suffix.",
+            "type": "string",
+            "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$"
+        },
+        "duration_ms": {
+            "description": "Total time to run all checks.",
+            "type": "integer",
+            "minimum": 0
+        },
+        "app": {
+            "type": "object",
+            "required": ["name", "environment"],
+            "additionalProperties": false,
+            "properties": {
+                "name": { "type": "string" },
+                "environment": { "type": "string" }
+            }
+        },
+        "checks": {
+            "description": "Only the checks that the app registers. An absent check means not applicable.",
+            "type": "array",
+            "items": { "$ref": "#/$defs/check" }
+        }
+    },
+    "$defs": {
+        "check": {
+            "type": "object",
+            "required": ["name", "status", "summary", "duration_ms", "meta"],
+            "additionalProperties": false,
+            "properties": {
+                "name": {
+                    "description": "Contract key. Shared names are listed here; project-specific checks use their own snake_case name.",
+                    "type": "string",
+                    "pattern": "^[a-z][a-z0-9_]*$",
+                    "examples": [
+                        "database",
+                        "cache",
+                        "mail",
+                        "queue",
+                        "schedule",
+                        "disk",
+                        "debug_mode",
+                        "environment",
+                        "redis",
+                        "error_tracker"
+                    ]
+                },
+                "status": {
+                    "enum": ["ok", "warning", "failed", "crashed", "skipped"]
+                },
+                "summary": {
+                    "description": "Human-readable. Not part of the contract: the monitor must not parse it.",
+                    "type": "string"
+                },
+                "duration_ms": {
+                    "type": "integer",
+                    "minimum": 0
+                },
+                "meta": {
+                    "description": "Allow-listed values per check. Always an object, possibly empty.",
+                    "type": "object"
+                }
+            },
+            "allOf": [
+                {
+                    "if": { "properties": { "name": { "const": "database" } } },
+                    "then": {
+                        "properties": {
+                            "meta": {
+                                "additionalProperties": false,
+                                "properties": { "connection_name": { "type": "string" } }
+                            }
+                        }
+                    }
+                },
+                {
+                    "if": { "properties": { "name": { "enum": ["cache", "mail"] } } },
+                    "then": {
+                        "properties": {
+                            "meta": {
+                                "additionalProperties": false,
+                                "properties": { "driver": { "type": "string" } }
+                            }
+                        }
+                    }
+                },
+                {
+                    "if": { "properties": { "name": { "const": "disk" } } },
+                    "then": {
+                        "properties": {
+                            "meta": {
+                                "additionalProperties": false,
+                                "properties": { "disk_space_used_percentage": { "type": "number" } }
+                            }
+                        }
+                    }
+                },
+                {
+                    "if": {
+                        "properties": {
+                            "name": {
+                                "enum": ["queue", "schedule", "debug_mode", "environment", "redis", "error_tracker"]
+                            }
+                        }
+                    },
+                    "then": {
+                        "properties": { "meta": { "maxProperties": 0 } }
+                    }
+                }
+            ]
+        }
+    }
+}
