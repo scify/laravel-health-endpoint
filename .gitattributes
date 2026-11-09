@@ -13,3 +13,5 @@
 /.githooks          export-ignore
 /tools              export-ignore
 /skills             export-ignore
+/CLAUDE.md          export-ignore
+/AGENTS.md          export-ignore
