@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+#
+# Checks the staged changes. Changes no file: run `composer lint:fix` to fix style findings.
+# Installed by `composer setup` (git config core.hooksPath .githooks). Works with GNU and BSD tools (Linux, macOS).
+
+set -uo pipefail
+
+fail() {
+    echo "❌ $1 Commit blocked."
+    echo "   Fix it and commit again. To bypass in an emergency: git commit --no-verify"
+    exit 1
+}
+
+# 1. Secrets. A secret that reaches a public repository cannot be taken back.
+if [ -x tools/bin/gitleaks ]; then
+    GITLEAKS=tools/bin/gitleaks
+elif command -v gitleaks >/dev/null 2>&1; then
+    GITLEAKS=gitleaks
+else
+    fail "Gitleaks is not installed. Run: composer setup."
+fi
+
+echo "🔒 Gitleaks: scanning the staged changes..."
+"$GITLEAKS" git --pre-commit --staged --redact --no-banner || fail "Gitleaks found a possible secret."
+echo "✅ No secrets found."
+
+# Staged PHP files, NUL-separated so names with spaces work; xargs -0 exists in GNU and BSD xargs.
+php_files() {
+    git diff --cached --name-only --diff-filter=d -z -- '*.php'
+}
+
+if [ -z "$(php_files | tr -d '\0')" ]; then
+    echo "✅ Pre-commit checks passed (no PHP files staged)."
+    exit 0
+fi
+
+# 2. Style: Rector and Pint in check mode, only on the staged PHP files.
+echo "🔍 Rector: checking the staged PHP files..."
+php_files | xargs -0 vendor/bin/rector process --dry-run --no-progress-bar \
+    || fail "Rector would change the staged files. Run: composer lint:fix."
+
+echo "🔍 Pint: checking the staged PHP files..."
+php_files | xargs -0 vendor/bin/pint --test \
+    || fail "Pint would change the staged files. Run: composer lint:fix."
+
+# 3. Static analysis of the whole package: a change in one file can break another.
+echo "🔍 PHPStan: analysing..."
+vendor/bin/phpstan analyse --no-progress || fail "PHPStan found errors."
+
+echo "✅ Pre-commit checks passed."

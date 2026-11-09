@@ -73,7 +73,7 @@ jobs:
         run: composer update --prefer-dist --no-interaction --no-progress
 
       - name: Check
-        run: composer check
+        run: composer lint:check
 
   tests-passed:
     runs-on: ubuntu-latest

@@ -4,12 +4,15 @@ SciFY maintains this package. Pull requests are welcome.
 
 ## Before you open a pull request
 
+Run `composer setup` once. It installs the dependencies, a pinned Gitleaks (checksum verified) and the pre-commit hook.
+
 ```bash
+composer lint:fix
 composer test
-composer check
 ```
 
-Both must pass. Do not add `@phpstan-ignore` comments, baseline entries or inline `@var` overrides: fix the type.
+CI runs `composer lint:check` and the tests; both must pass. The hook runs Gitleaks and the same style checks on the
+staged files. Do not add `@phpstan-ignore` comments, baseline entries or inline `@var` overrides: fix the type.
 Keep the code compatible with PHP 8.3 and Laravel 12: the CI matrix tests both.
 
 ## Adding a check or a probe

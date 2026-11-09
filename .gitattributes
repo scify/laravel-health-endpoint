@@ -10,3 +10,5 @@
 /rector.php         export-ignore
 /CHANGELOG.md       export-ignore
 /CONTRIBUTING.md    export-ignore
+/.githooks          export-ignore
+/tools              export-ignore

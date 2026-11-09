@@ -21,7 +21,7 @@ Status: `0.x`, before the first release. The contract (`schema_version` 1.0) is 
 - [Production setup](#production-setup)
 - [Adding checks](#adding-checks)
 - [Security](#security)
-- [Testing](#testing)
+- [Development](#development)
 - [Licence](#licence)
 
 ## Requirements
@@ -236,13 +236,20 @@ To add a check or probe to this package, follow the checklist in [CONTRIBUTING.m
 
 To report a vulnerability, see [SECURITY.md](SECURITY.md).
 
-## Testing
+## Development
 
 ```bash
-composer test       # Pest
-composer analyse    # PHPStan, level 9
-composer check      # Pint, Rector and PHPStan without changes
+composer setup           # dependencies, Gitleaks and the pre-commit hook
+composer test            # Pest
+composer test:coverage   # Pest with coverage (needs Xdebug)
+composer analyse         # PHPStan, level 9
+composer lint:check      # Pint, Rector and PHPStan, without changes
+composer lint:fix        # Rector and Pint fix the code, then PHPStan
 ```
+
+`composer setup` installs a pinned Gitleaks in `tools/bin/` after it checks the release checksum, and sets
+`core.hooksPath` to `.githooks/`. The pre-commit hook scans the staged changes for secrets and checks the staged PHP
+files. It changes no file: run `composer lint:fix` when it reports style findings.
 
 ## Licence
 

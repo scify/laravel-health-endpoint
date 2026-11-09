@@ -48,13 +48,29 @@
         }
     },
     "scripts": {
-        "test": "pest",
+        "setup": [
+            "@composer install",
+            "bash tools/install-gitleaks.sh",
+            "git config core.hooksPath .githooks"
+        ],
+        "post-install-cmd": [
+            "@php -r \"is_dir('.git') && passthru('git config core.hooksPath .githooks');\""
+        ],
         "analyse": "phpstan analyse --no-progress",
-        "format": "pint",
-        "check": [
+        "lint:check": [
             "pint --test",
-            "rector process --dry-run",
-            "phpstan analyse --no-progress"
+            "rector --dry-run --no-progress-bar",
+            "@analyse"
+        ],
+        "lint:fix": [
+            "rector --no-progress-bar",
+            "pint",
+            "@analyse"
+        ],
+        "test": "pest",
+        "test:coverage": [
+            "@putenv XDEBUG_MODE=coverage",
+            "pest --coverage"
         ]
     },
     "config": {
@@ -72,5 +88,13 @@
         }
     },
     "minimum-stability": "stable",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "scripts-descriptions": {
+        "setup": "Install dependencies, Gitleaks and the pre-commit hook",
+        "analyse": "Run PHPStan",
+        "lint:check": "Check style (Pint, Rector) and run PHPStan, without changes",
+        "lint:fix": "Fix style with Rector and Pint, then run PHPStan",
+        "test": "Run the tests",
+        "test:coverage": "Run the tests with coverage (needs Xdebug)"
+    }
 }
