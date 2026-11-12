@@ -11,3 +11,4 @@ testbench.yaml
 .vscode/
 .DS_Store
 /tools/bin/
+coverage.xml

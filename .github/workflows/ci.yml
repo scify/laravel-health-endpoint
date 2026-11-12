@@ -26,6 +26,11 @@ jobs:
             testbench: '10.*'
           - laravel: '13.*'
             testbench: '11.*'
+          # One job measures coverage for Codecov. The other jobs skip it to stay fast.
+          - php: '8.4'
+            laravel: '13.*'
+            stability: prefer-stable
+            coverage: true
 
     name: PHP ${{ matrix.php }} - Laravel ${{ matrix.laravel }} - ${{ matrix.stability }}
 
@@ -39,7 +44,7 @@ jobs:
         uses: shivammathur/setup-php@eb7c497e18156a6bbabfef1d3a82760b9eda3962 # v2
         with:
           php-version: ${{ matrix.php }}
-          coverage: none
+          coverage: ${{ matrix.coverage && 'pcov' || 'none' }}
 
       - name: Install dependencies
         env:
@@ -51,7 +56,20 @@ jobs:
           composer update "--$STABILITY" --prefer-dist --no-interaction --no-progress
 
       - name: Run tests
+        if: ${{ !matrix.coverage }}
         run: vendor/bin/pest
+
+      - name: Run tests with coverage
+        if: ${{ matrix.coverage }}
+        run: vendor/bin/pest --coverage-clover=coverage.xml
+
+      - name: Upload coverage reports to Codecov
+        if: ${{ matrix.coverage }}
+        uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 # v7.1.1
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          slug: scify/laravel-health-endpoint
+          files: coverage.xml
 
   lint:
     runs-on: ubuntu-latest
