@@ -1,0 +1,57 @@
+name: Bug report
+description: Report a reproducible bug in the package.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Do not paste the health token, hostnames, credentials or DSNs. Replace them with placeholders.
+        To report a security vulnerability, use **Report a vulnerability** in the Security tab, not an issue.
+
+  - type: input
+    id: package-version
+    attributes:
+      label: Package version
+      description: Run `composer show scify/laravel-health-endpoint`.
+      placeholder: 0.1.0
+    validations:
+      required: true
+
+  - type: input
+    id: laravel-version
+    attributes:
+      label: Laravel version
+      placeholder: '12.40.0'
+    validations:
+      required: true
+
+  - type: input
+    id: php-version
+    attributes:
+      label: PHP version
+      placeholder: '8.4.15'
+    validations:
+      required: true
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: Include the HTTP status code and the response body, if the bug is in the response.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Include the relevant part of `config/health-endpoint.php` and the drivers that the app uses.
+    validations:
+      required: true
