@@ -2,6 +2,7 @@
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/scify/laravel-health-endpoint.svg)](https://packagist.org/packages/scify/laravel-health-endpoint)
 [![CI](https://img.shields.io/github/actions/workflow/status/scify/laravel-health-endpoint/ci.yml?branch=main&label=CI)](https://github.com/scify/laravel-health-endpoint/actions/workflows/ci.yml?query=branch%3Amain)
+[![codecov](https://codecov.io/gh/scify/laravel-health-endpoint/graph/badge.svg)](https://codecov.io/gh/scify/laravel-health-endpoint)
 [![PHP Version](https://img.shields.io/packagist/dependency-v/scify/laravel-health-endpoint/php)](composer.json)
 [![Total Downloads](https://img.shields.io/packagist/dt/scify/laravel-health-endpoint.svg)](https://packagist.org/packages/scify/laravel-health-endpoint)
 [![License](https://img.shields.io/packagist/l/scify/laravel-health-endpoint.svg)](LICENSE.md)
