@@ -26,7 +26,7 @@ describe('ResultMapper', function (): void {
         $envelope = healthEnvelope([healthOutcome('database', Status::ok(), 'Connected', [], 8)]);
 
         // Assert
-        expect($envelope['schema_version'])->toBe('1.0')
+        expect($envelope['schema_version'])->toBe(ResultMapper::SCHEMA_VERSION)
             ->and($envelope['checked_at'])->toBe('2026-10-07T10:00:00Z')
             ->and($envelope['duration_ms'])->toBe(42)
             ->and($envelope['app'])->toBe(['name' => 'Example App', 'environment' => 'production'])

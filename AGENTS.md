@@ -14,7 +14,8 @@ this repository.
    `LaravelLevelSetList::UP_TO_LARAVEL_120`: the composer-based sets add Laravel 13-only code.
 2. **The JSON contract.** `resources/schema/health-response.schema.json` is the source of truth for every app and the
    monitor. Before you change a field, a status or an HTTP code, read "The JSON contract" in
-   [CONTRIBUTING.md](CONTRIBUTING.md): it decides the `schema_version` and package version change.
+   [CONTRIBUTING.md](CONTRIBUTING.md): it decides the `schema_version` and package version change, and lists every
+   file to change. `ResultMapper::SCHEMA_VERSION` sets `schema_version`; the tests read that constant.
 3. **Checks and probes.** Follow the checklist in [CONTRIBUTING.md](CONTRIBUTING.md), "Adding a check or a probe".
    Add a new check to `CheckRegistry::DEFAULTS` with `false`: the defaults also apply to apps that published an older
    config, and an update must not add a check to them. A `meta` key reaches the response only through the allow-list

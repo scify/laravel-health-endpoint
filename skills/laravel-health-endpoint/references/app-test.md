@@ -43,7 +43,8 @@ describe('GET /health', function (): void {
 
         // Assert
         expect($response->status())->toBeIn([200, 503]);
-        $response->assertJsonPath('schema_version', '1.0')
+        // Check the major version only. A MINOR package update adds optional fields and must not fail this test.
+        $response->assertJsonPath('schema_version', fn (string $version): bool => str_starts_with($version, '1.'))
             ->assertJsonPath('app.name', config('app.name'))
             ->assertJsonStructure(['status', 'checked_at', 'duration_ms', 'checks' => [['name', 'status', 'summary', 'duration_ms', 'meta']]]);
     });
