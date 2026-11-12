@@ -12,6 +12,10 @@ Documentation and repository only. The package code does not change.
 - README badges: Packagist version, CI status, Codecov coverage, PHP version, downloads and license.
 - A bug report form and a link to private vulnerability reports, in `.github/ISSUE_TEMPLATE/`.
 
+### Changed
+
+- The app test in the agent skill checks the major `schema_version` only. A MINOR package update no longer fails it.
+
 ## [0.1.0] - 2026-11-09
 
 First release.

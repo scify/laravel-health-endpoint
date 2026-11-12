@@ -59,3 +59,19 @@ that are too old.
 `resources/schema/health-response.schema.json` is the source of truth for every SciFY app and the monitor. A new
 optional field is a MINOR change of `schema_version` and of the package. A removed or renamed field, or a changed
 status rule, is a MAJOR change and needs the monitor to change first.
+
+`ResultMapper::SCHEMA_VERSION` is the only place in the code that sets `schema_version`. The package tests read the
+constant. To change the version:
+
+1. Set `ResultMapper::SCHEMA_VERSION` in `src/ResultMapper.php`.
+2. In `resources/schema/health-response.schema.json`, add or change the field. For a MAJOR change, also change the
+   `schema_version` pattern (`^1\.[0-9]+$`) and the "schema_version 1.x" text in the `description`.
+3. Change the version in `README.md`: the status line below the title and the example response.
+4. For a MAJOR change, change the major version in `skills/laravel-health-endpoint/references/app-test.md`. That
+   test checks the major version only, so a MINOR change needs no edit there. Change the private copy of the skill too
+   (see "The agent skill").
+5. Add a CHANGELOG entry under a new package version: MINOR for a MINOR change. The package major version follows the
+   contract major version.
+
+`composer test` fails when the constant and the schema pattern do not agree: the response tests validate each body
+against the schema.

@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Facades\Exceptions;
+use SciFY\LaravelHealthEndpoint\ResultMapper;
 use SciFY\LaravelHealthEndpoint\Tests\Fixtures\ScriptedCheck;
 use Spatie\Health\Checks\Check;
 use Spatie\Health\Checks\Result;
@@ -81,7 +82,7 @@ describe('GET /health', function (): void {
 
             // Assert
             $response->assertOk()
-                ->assertJsonPath('schema_version', '1.0')
+                ->assertJsonPath('schema_version', ResultMapper::SCHEMA_VERSION)
                 ->assertJsonPath('status', 'ok')
                 ->assertJsonPath('app.name', config('app.name'))
                 ->assertJsonPath('app.environment', config('app.env'))
